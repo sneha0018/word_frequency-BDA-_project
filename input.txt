@@ -1,0 +1,1 @@
+Big data is useful. Big data helps businesses. MapReduce processes big data. Word frequency analysis counts words in data. Big data analytics uses MapReduce.

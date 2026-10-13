@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Frequency Analysis | MapReduce</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="logo">W</div>
+        <div>
+          <h1>Word Frequency Analysis</h1>
+          <p>Big Data Analytics · Powered by MapReduce</p>
+        </div>
+      </div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#results">Results</a>
+        <a href="#about">About</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="intro">
+        <span class="tag">BDA MINI PROJECT</span>
+        <h2>Turn text into meaningful insights.</h2>
+        <p>
+          Analyze text, discover frequent words, and explore the MapReduce
+          processing pipeline.
+        </p>
+      </section>
+
+      <section class="workspace">
+        <div class="panel input-panel">
+          <h3>Input Text</h3>
+          <textarea
+            id="textInput"
+            placeholder="Paste your text here to analyze..."
+          >
+Big data is useful. Big data helps businesses. MapReduce processes big data. Word frequency analysis counts words in data. Big data analytics uses MapReduce.</textarea
+          >
+          <div class="input-actions">
+            <label class="upload">
+              Upload .txt
+              <input type="file" id="fileInput" accept=".txt" />
+            </label>
+            <span id="charCount">0 characters</span>
+          </div>
+          <button id="analyzeBtn" onclick="analyzeText()">
+            Analyze Using MapReduce →
+          </button>
+          <p id="status" role="status"></p>
+        </div>
+
+        <div class="dashboard">
+          <div class="stats">
+            <div class="stat blue">
+              <p>Total Words</p>
+              <h2 id="totalWords">—</h2>
+            </div>
+            <div class="stat green">
+              <p>Unique Words</p>
+              <h2 id="uniqueWords">—</h2>
+            </div>
+            <div class="stat orange">
+              <p>Most Frequent</p>
+              <h2 id="mostFrequent">—</h2>
+            </div>
+            <div class="stat purple">
+              <p>Processing Time</p>
+              <h2 id="processingTime">—</h2>
+            </div>
+          </div>
+
+          <div class="panel results-panel" id="results">
+            <div class="section-heading">
+              <h3>Word Frequency Results</h3>
+              <input
+                id="searchWord"
+                placeholder="Search word..."
+                aria-label="Search results"
+              />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Word</th>
+                    <th>Frequency</th>
+                  </tr>
+                </thead>
+                <tbody id="resultsBody">
+                  <tr>
+                    <td colspan="3">Run your first analysis.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel chart-panel">
+            <h3>Word Frequency Chart</h3>
+            <canvas id="frequencyChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel pipeline" id="about">
+        <h3>How MapReduce Works</h3>
+        <div class="pipeline-steps">
+          <div>
+            <span>01</span>
+            <h4>Map</h4>
+            <p>Generate (word, 1) pairs.</p>
+          </div>
+          <div>
+            <span>02</span>
+            <h4>Shuffle & Sort</h4>
+            <p>Group identical words.</p>
+          </div>
+          <div>
+            <span>03</span>
+            <h4>Reduce</h4>
+            <p>Add counts for each word.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>BDA Project · Word Frequency Analysis using MapReduce</footer>
+
+    <script>
+      const textInput = document.getElementById("textInput");
+      const fileInput = document.getElementById("fileInput");
+      const searchWord = document.getElementById("searchWord");
+      let allResults = [];
+      let frequencyChart = null;
+
+      function updateCharacters() {
+        document.getElementById("charCount").textContent =
+          textInput.value.length + " characters";
+      }
+      textInput.addEventListener("input", updateCharacters);
+      updateCharacters();
+
+      fileInput.addEventListener("change", async () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+        textInput.value = await file.text();
+        updateCharacters();
+      });
+
+      searchWord.addEventListener("input", renderTable);
+
+      function renderTable() {
+        const query = searchWord.value.toLowerCase();
+        const filtered = allResults.filter((item) => item.word.includes(query));
+        const tbody = document.getElementById("resultsBody");
+        tbody.replaceChildren();
+
+        if (!filtered.length) {
+          const row = tbody.insertRow();
+          const cell = row.insertCell();
+          cell.colSpan = 3;
+          cell.textContent = "No matching words found.";
+          return;
+        }
+
+        filtered.forEach((item, index) => {
+          const row = tbody.insertRow();
+          row.insertCell().textContent = index + 1;
+          row.insertCell().textContent = item.word;
+          row.insertCell().textContent = item.count;
+        });
+      }
+
+      async function analyzeText() {
+        const button = document.getElementById("analyzeBtn");
+        const status = document.getElementById("status");
+
+        button.disabled = true;
+        status.textContent = "Processing text through MapReduce...";
+
+        try {
+          const response = await fetch("/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: textInput.value }),
+          });
+          const data = await response.json();
+
+          if (!response.ok) throw new Error(data.error || "Analysis failed.");
+
+          document.getElementById("totalWords").textContent = data.total_words;
+          document.getElementById("uniqueWords").textContent =
+            data.unique_words;
+          document.getElementById("mostFrequent").textContent =
+            data.most_frequent;
+          document.getElementById("processingTime").textContent =
+            data.processing_time + " ms";
+
+          allResults = data.results;
+          renderTable();
+
+          const topWords = data.results.slice(0, 10);
+          if (frequencyChart) frequencyChart.destroy();
+
+          frequencyChart = new Chart(
+            document.getElementById("frequencyChart"),
+            {
+              type: "bar",
+              data: {
+                labels: topWords.map((item) => item.word),
+                datasets: [
+                  {
+                    label: "Word frequency",
+                    data: topWords.map((item) => item.count),
+                    backgroundColor: "#4f78f5",
+                    borderRadius: 6,
+                  },
+                ],
+              },
+              options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+              },
+            },
+          );
+
+          status.textContent = "Analysis completed successfully!";
+        } catch (error) {
+          status.textContent = error.message;
+        } finally {
+          button.disabled = false;
+        }
+      }
+
+      analyzeText();
+    </script>
+  </body>
+</html>

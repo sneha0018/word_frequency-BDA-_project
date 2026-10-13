@@ -1,0 +1,335 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f4f7fc;
+  color: #17243b;
+}
+
+header {
+  background: #14243f;
+  color: white;
+  padding: 20px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  background: #356df3;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.brand p {
+  margin: 5px 0 0;
+  color: #bdcce6;
+  font-size: 13px;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+}
+
+nav a {
+  color: #e5ecfa;
+  text-decoration: none;
+}
+
+main {
+  max-width: 1450px;
+  margin: auto;
+  padding: 28px 5%;
+}
+
+.intro {
+  margin: 8px 0 26px;
+}
+
+.tag {
+  color: #356df3;
+  font-weight: bold;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+
+.intro h2 {
+  font-size: clamp(25px, 3vw, 36px);
+  margin: 12px 0 8px;
+}
+
+.intro p {
+  color: #69778c;
+  line-height: 1.6;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.5fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.panel,
+.stat {
+  background: white;
+  border: 1px solid #e5eaf3;
+  border-radius: 16px;
+  box-shadow: 0 5px 22px rgba(30, 55, 95, 0.04);
+}
+
+.panel {
+  padding: 22px;
+}
+
+.panel h3 {
+  margin: 0 0 18px;
+  font-size: 18px;
+}
+
+.input-panel textarea {
+  width: 100%;
+  min-height: 260px;
+  resize: vertical;
+  padding: 15px;
+  border: 1px solid #d5deed;
+  border-radius: 10px;
+  font: inherit;
+  line-height: 1.7;
+  outline-color: #356df3;
+}
+
+.input-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 20px;
+  color: #7b8798;
+  font-size: 13px;
+}
+
+.upload {
+  color: #356df3;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.upload input {
+  width: 125px;
+  font-size: 12px;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  background: #356df3;
+  color: white;
+  padding: 15px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#analyzeBtn {
+  width: 100%;
+}
+
+button:hover {
+  background: #2457d4;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+#status {
+  font-size: 13px;
+  color: #356df3;
+  overflow-wrap: anywhere;
+}
+
+.dashboard {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  padding: 17px;
+  border-radius: 13px;
+}
+
+.stat p {
+  margin: 0;
+  color: #66748b;
+  font-size: 13px;
+}
+
+.stat h2 {
+  margin: 12px 0 0;
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+
+.blue {
+  border-top: 3px solid #4f78f5;
+}
+.green {
+  border-top: 3px solid #20ae81;
+}
+.orange {
+  border-top: 3px solid #f1a340;
+}
+.purple {
+  border-top: 3px solid #9569e8;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.section-heading input {
+  width: 150px;
+  max-width: 100%;
+  padding: 10px;
+  border: 1px solid #d5deed;
+  border-radius: 8px;
+}
+
+.table-wrap {
+  max-height: 320px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #edf0f6;
+}
+
+th {
+  background: #edf2fb;
+  position: sticky;
+  top: 0;
+}
+
+td:last-child,
+th:last-child {
+  text-align: center;
+}
+
+tbody tr:hover {
+  background: #f5f8ff;
+}
+
+.chart-panel canvas {
+  max-height: 320px;
+}
+
+.pipeline {
+  margin-top: 24px;
+}
+
+.pipeline-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pipeline-steps > div {
+  padding: 18px;
+  border-radius: 12px;
+  background: #f4f7ff;
+}
+
+.pipeline-steps span {
+  color: #356df3;
+  font-weight: bold;
+}
+
+.pipeline-steps h4 {
+  margin: 10px 0 5px;
+}
+
+.pipeline-steps p {
+  color: #69778c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+footer {
+  text-align: center;
+  padding: 24px;
+  color: #7b8798;
+  font-size: 13px;
+}
+
+@media (max-width: 850px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  header {
+    padding: 18px;
+  }
+
+  nav {
+    gap: 14px;
+    font-size: 13px;
+  }
+
+  main {
+    padding: 22px 14px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .pipeline-steps {
+    grid-template-columns: 1fr;
+  }
+}
